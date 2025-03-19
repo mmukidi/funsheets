@@ -3,54 +3,58 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
-export default function DownloadButton() {
+interface DownloadButtonProps {
+  storagePath: string;
+  fileName: string;
+  fileType: string;
+}
+
+export default function DownloadButton({ storagePath, fileName, fileType }: DownloadButtonProps) {
   const [downloading, setDownloading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleDownload = async () => {
     try {
       setDownloading(true);
-      setMessage('');
+      setError('');
 
-      // Using the correct file path for the template
-      const filePath = 'template.xlsx';
-      
       const { data, error } = await supabase.storage
         .from('worksheets')
-        .download(filePath);
+        .download(storagePath);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       // Create download link
       const url = URL.createObjectURL(data);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'template.xlsx';
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       URL.revokeObjectURL(url);
       document.body.removeChild(a);
-
-      setMessage('Template downloaded successfully!');
     } catch (error) {
       console.error('Error downloading file:', error);
-      setMessage('Error downloading template');
+      setError('Error downloading file');
     } finally {
       setDownloading(false);
     }
   };
 
   return (
-    <div className="p-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Download Template</h2>
+    <div className="w-full sm:w-auto">
       <button
         onClick={handleDownload}
         disabled={downloading}
-        className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+        className="w-full sm:w-auto px-6 py-2.5 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed text-base font-medium"
       >
-        {downloading ? 'Downloading...' : 'Download Template'}
+        {downloading ? 'Downloading...' : 'Download'}
       </button>
-      {message && <p className="mt-2 text-gray-600">{message}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-red-600 text-center sm:text-left">{error}</p>
+      )}
     </div>
   );
 } 

@@ -1,14 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import DownloadButton from './DownloadButton';
 
 interface Document {
   id: string;
   title: string;
+  description: string;
   storage_path: string;
-  uploaded_at: string;
-  size: number;
+  file_type: string;
+  file_size: number;
+  created_at: string;
+  metadata: {
+    originalName: string;
+    lastModified: number;
+    fileId: string;
+  };
 }
 
 export default function FileList() {
@@ -22,81 +30,99 @@ export default function FileList() {
 
   const loadDocuments = async () => {
     try {
-      const { data, error } = await supabase
-        .from('worksheets')
-        .select('*')
-        .order('uploaded_at', { ascending: false });
+      setLoading(true);
+      setError('');
 
-      if (error) throw error;
+      const { data, error } = await supabase
+        .from('documents')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
       setDocuments(data || []);
     } catch (error) {
       console.error('Error loading documents:', error);
-      setError('Error loading documents');
+      setError('Error loading documents. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
-  const downloadFile = async (storagePath: string, fileName: string) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('worksheets')
-        .download(storagePath);
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
 
-      if (error) throw error;
-
-      // Create download link
-      const url = URL.createObjectURL(data);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading file:', error);
-      alert('Error downloading file');
-    }
+  const formatDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   };
 
   if (loading) {
-    return <div className="p-4 text-center">Loading documents...</div>;
+    return (
+      <div className="p-4 text-center">
+        <p className="text-gray-600">Loading documents...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="p-4 text-red-500">{error}</div>;
+    return (
+      <div className="p-4 text-center">
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
+
+  if (documents.length === 0) {
+    return (
+      <div className="p-4 text-center">
+        <p className="text-gray-600">No documents found.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Documents</h2>
-      <div className="space-y-4">
-        {documents.length === 0 ? (
-          <p className="text-gray-500">No documents uploaded yet.</p>
-        ) : (
-          documents.map((doc) => (
-            <div
-              key={doc.id}
-              className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div>
-                <h3 className="font-semibold text-gray-800">{doc.title}</h3>
-                <p className="text-sm text-gray-500">
-                  {new Date(doc.uploaded_at).toLocaleDateString()} • 
-                  {(doc.size / 1024 / 1024).toFixed(2)} MB
-                </p>
+    <div className="space-y-4">
+      {documents.map((doc) => (
+        <div
+          key={doc.id}
+          className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md"
+        >
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div className="flex-1">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 break-words">{doc.title}</h3>
+              {doc.description && (
+                <p className="mt-1 text-sm text-gray-600 break-words">{doc.description}</p>
+              )}
+              <div className="mt-2 text-sm text-gray-500 space-y-1">
+                <p>File type: {doc.file_type}</p>
+                <p>Size: {formatFileSize(doc.file_size)}</p>
+                <p>Uploaded: {formatDate(doc.created_at)}</p>
               </div>
-              <button
-                onClick={() => downloadFile(doc.storage_path, doc.title)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-              >
-                Download
-              </button>
             </div>
-          ))
-        )}
-      </div>
+            <div className="flex justify-center sm:justify-end">
+              <DownloadButton
+                storagePath={doc.storage_path}
+                fileName={doc.metadata.originalName}
+                fileType={doc.file_type}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 } 
