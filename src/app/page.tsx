@@ -3,7 +3,7 @@ import ResponsiveLayout from './components/ResponsiveLayout';
 export default function Home() {
   return (
     <ResponsiveLayout>
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome to FunSheets!</h2>
         <p className="text-gray-600 mb-4">
           This is a dynamic content area that will adapt to different screen sizes.
