@@ -1,12 +1,21 @@
-import Image from "next/image";
+import ResponsiveLayout from './components/ResponsiveLayout';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">Welcome to FunSheets!</h1>
-        <p className="text-xl text-white/90">Your new Next.js application is running successfully.</p>
+    <ResponsiveLayout>
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome to FunSheets!</h2>
+        <p className="text-gray-600 mb-4">
+          This is a dynamic content area that will adapt to different screen sizes.
+          The layout above demonstrates responsive design principles:
+        </p>
+        <ul className="list-disc list-inside text-gray-600 space-y-2">
+          <li>Cards stack vertically on mobile and display in a grid on desktop</li>
+          <li>Navigation buttons stack on mobile and align horizontally on desktop</li>
+          <li>Text sizes adjust automatically for better readability</li>
+          <li>Spacing and padding adapt to screen size</li>
+        </ul>
       </div>
-    </div>
+    </ResponsiveLayout>
   );
 }
