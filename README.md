@@ -1,92 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FunSheets - AI-Powered Educational Worksheet Generator
 
-## Getting Started
+FunSheets is a modern web application that generates customized educational worksheets using AI technology. It creates engaging, age-appropriate worksheets aligned with US curriculum standards.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Version 0.1.2 (Current Release)
+- **Enhanced Worksheet Generation**
+  - Structured 20-question format with:
+    - 8 multiple-choice questions
+    - 6 short-answer questions
+    - 4 problem-solving questions
+    - 2 creative thinking questions
+  - Subject-specific enhancements (especially for ELA)
+  - Progressive difficulty levels
+  - Real-world applications based on student interests
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Version 0.1.1
+- **User Profile Management**
+  - Student profile creation with:
+    - Name, age, and gender
+    - Subject preferences
+    - Personal interests
+  - Supabase integration for data persistence
+  - Profile-based worksheet customization
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Version 0.1.0 (Initial Release)
+- **Core Features**
+  - Next.js 15.2.3 with TypeScript
+  - Modern UI with Tailwind CSS
+  - Mobile-responsive design
+  - OpenAI GPT-4 Turbo integration
+  - Word document generation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technical Stack
 
-## Learn More
+- **Frontend Framework**: Next.js 15.2.3
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Supabase
+- **AI Integration**: OpenAI GPT-4 Turbo
+- **Development Tools**:
+  - Turbopack for faster builds
+  - ESLint for code quality
+  - TypeScript for type safety
 
-To learn more about Next.js, take a look at the following resources:
+## Setup Instructions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Changelog
-
-### Version 0.1.0 (Initial Release) - March 19, 2024
-- Initial project setup with Next.js and TypeScript
-- Added mobile-responsive welcome page with gradient background
-- Implemented Tailwind CSS for styling
-- Set up development environment with hot reloading
-- Configured GitHub repository for version control
-
-### Version 0.1.1 (Responsive Layout Update) - March 19, 2024
-- Added ResponsiveLayout component with dynamic screen size detection
-- Implemented responsive grid system for feature cards
-- Added mobile-first navigation with responsive buttons
-- Created dynamic content area that adapts to screen size
-- Added visual feedback for current view mode (Mobile/Desktop)
-
-### Features
-- Mobile-responsive design that works on all devices
-- Modern UI with gradient background
-- Real-time development updates with hot reloading
-- TypeScript support for better type safety
-- Tailwind CSS for utility-first styling
-- Dynamic responsive layout that adapts to screen size
-- Interactive feature cards with hover effects
-- Responsive navigation system
-- Screen size detection and display
-
-### Technical Stack
-- Next.js 15.2.3
-- TypeScript
-- Tailwind CSS
-- React 19.0.0
-- Turbopack for faster development builds
-
-### Development Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/mmukidi/funsheets.git
+   git clone [repository-url]
+   cd funsheets
    ```
+
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Run the development server:
+
+3. Set up environment variables:
+   Create a `.env.local` file with:
+   ```
+   NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. Run the development server:
    ```bash
    npm run dev
    ```
-4. Open http://localhost:3000 in your browser
 
-### Future Roadmap
-- [ ] Add user authentication
-- [ ] Implement core FunSheets features
-- [ ] Add database integration
-- [ ] Set up testing environment
-- [ ] Add CI/CD pipeline
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Project Structure
+
+```
+funsheets/
+├── src/
+│   ├── app/                 # Next.js app directory
+│   │   ├── components/      # React components
+│   │   └── sql/            # Database schema
+│   └── lib/                 # Utility functions and configurations
+├── public/                  # Static assets
+└── package.json            # Project dependencies
+```
+
+## Database Schema
+
+The application uses Supabase with the following tables:
+- `profiles`: Stores user profile information
+- `prompts`: Stores generated worksheet prompts
+- `documents`: Manages generated worksheets
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- OpenAI for GPT-4 Turbo API
+- Supabase for backend services
+- Next.js team for the amazing framework
+- Tailwind CSS for the utility-first CSS framework

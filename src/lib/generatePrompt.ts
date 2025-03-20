@@ -1,47 +1,91 @@
 interface Profile {
   name: string;
-  age: number;
+  age: string;
   interests: string;
   subjects: string[];
   gender: string;
 }
 
-export function generateCustomPrompt(profile: Profile, subject: string): string {
-  const gradeLevel = profile.age >= 15 ? 'High School' :
-                     profile.age >= 12 ? 'Middle School' :
-                     profile.age >= 9 ? '4th-5th Grade' :
-                     profile.age >= 7 ? '2nd-3rd Grade' :
-                     '1st Grade';
+export function generateCustomPrompt(profile: Profile): string {
+  const age = parseInt(profile.age);
+  const gradeLevel = age >= 18 ? 'college' : 
+                     age >= 14 ? 'high school' : 
+                     age >= 11 ? 'middle school' : 'elementary school';
+  
+  const difficultyLevel = age >= 18 ? 'advanced' : 
+                         age >= 14 ? 'intermediate' : 
+                         age >= 11 ? 'beginner-intermediate' : 'beginner';
+  
+  const pronoun = profile.gender === 'Female' ? 'she' : 
+                  profile.gender === 'Male' ? 'he' : 'they';
+  const possessivePronoun = profile.gender === 'Female' ? 'her' : 
+                           profile.gender === 'Male' ? 'his' : 'their';
 
-  const difficultyLevel = profile.age >= 15 ? 'advanced' :
-                          profile.age >= 12 ? 'intermediate' :
-                          'basic';
+  const prompt = `Generate a fully formatted Word document (.docx) containing a **customized worksheet** for a **${age}-year-old student** named **${profile.name}**. The worksheet should be engaging, age-appropriate, and aligned with **the US curriculum** for ${gradeLevel}.
 
-  const pronoun = profile.gender.toLowerCase() === 'male' ? 'he' : 'she';
-  const possessivePronoun = profile.gender.toLowerCase() === 'male' ? 'his' : 'her';
+---
+## **Word Document Structure**  
+The generated Word document must be structured as follows:
 
-  return `Generate a customized ${subject} worksheet for a ${profile.age}-year-old student (${gradeLevel}) named ${profile.name}. The worksheet should be engaging, age-appropriate, and aligned with the US curriculum for this grade level.
+### **1. Worksheet Section (Main Content)**
+   - **Title** at the top: Include the student's name, subject, and a blank space for the date.  
+   - **Introduction & Instructions:** A short, encouraging introduction with clear instructions for completing the worksheet.  
+   - **EXACTLY 20 Questions**, structured as follows:
+     - **8 multiple-choice questions** (covering fundamental concepts).  
+     - **6 short-answer questions** (requiring brief explanations, calculations, or analysis).  
+     - **4 problem-solving questions** (requiring multi-step solutions and real-world application).  
+     - **2 creative thinking questions** (to encourage deeper critical thinking and imagination).  
+   - **Number all questions clearly from 1 to 20**.  
+   - **Provide enough space for the student to write answers**:
+     - Multiple choice: 2 lines  
+     - Short answer: 4-5 lines  
+     - Problem-solving: 8-10 lines  
+     - Creative thinking: 10-12 lines  
+   - **Ensure progressive difficulty** (start with simple questions and gradually introduce more challenging ones).  
+   - **Use the student's interests (${profile.interests})** to craft relevant and fun scenarios in the questions.  
+   - **Include real-world application** to make learning meaningful (e.g., if the student loves soccer, frame math problems around goal statistics).  
+   - **Add at least one brain teaser, puzzle, or logic-based challenge** to develop analytical thinking.  
+   - **If applicable, describe visuals, diagrams, or hands-on activities** (e.g., "Label the diagram," or "Sketch your answer").  
+   - **Ensure all content aligns with the student's US grade-level curriculum.**  
 
-Include a variety of question types (e.g. multiple-choice, short answer, matching, and an open-ended problem-solving question) to ensure balanced questioning. Make sure some questions involve analytical reasoning or real-world scenarios.
+### **Subject-Specific Enhancements**  
+If the selected subject is **ELA (English Language Arts)**, modify the structure as follows:
+  - **Include one reading comprehension passage** with at least **3 related questions**.  
+  - **Incorporate grammar and vocabulary exercises** relevant to ${gradeLevel}.  
+  - **Add at least one writing prompt** (e.g., creative writing or analytical response).  
+  - **Introduce a word puzzle or vocabulary-building activity**.  
+  - **Ensure questions cover comprehension, critical thinking, grammar, and word usage.**  
 
-The content and difficulty of the questions should reflect what a student of this age is learning in ${subject} class (for example, include topics and skills that are typical according to state standards or Common Core for this grade). Start with easier questions to build confidence and then gradually increase the difficulty for a proper skill progression. Provide any necessary instructions or examples for harder problems to help the student along.
+### **2. Answer Sheet (Separate Section on a New Page)**  
+   - **Leave at least ONE full blank page after the last question** before starting the answer sheet.  
+   - **Clearly label the section as 'Answer Sheet'** and ensure it starts on a **new page**.  
+   - **Provide complete answers** for all 20 questions.  
+   - **Step-by-step explanations** for problem-solving and short-answer questions.  
+   - **Break down complex answers into simpler steps** so parents can understand the reasoning.  
+   - **For creative thinking questions, include a rubric or key points** that parents can use for evaluation.  
+   - **Helpful tips for parents or teachers** on how to explain challenging concepts or encourage the student's problem-solving approach.  
 
-Integrate the student's interests and hobbies (${profile.interests}) into the worksheet to boost engagement. Use a fun, storytelling approach or a unifying theme throughout the worksheet so that it feels like a cohesive activity rather than a random list of questions. You can even set up a scenario or a mission (e.g., a story of a hero, a mystery to solve, or a game level to beat) that progresses with each question, making the student feel immersed in a narrative or game.
+---
+## **Engagement & Cognitive Development Strategies**
+1. **Balanced Questioning:** Ensure a mix of easy, moderate, and challenging questions.  
+2. **Gamification Elements:** Consider a storytelling or mission-based approach where each question builds on a theme.  
+3. **Critical Thinking Development:** Include logic-based puzzles, pattern recognition, and mini-case studies.  
+4. **Visual & Interactive Learning:** Describe diagrams, charts, or experiments where applicable.  
+5. **Skill Progression & Motivation:** Start with confidence-building questions and end with a rewarding challenge.  
 
-Add at least one puzzle or brain teaser related to ${subject} to promote cognitive development and critical thinking (for example, a simple logic puzzle, riddle, or pattern to complete that ties into the subject). Also include one or two fun elements such as a riddle, joke, or creative prompt to keep it enjoyable. Ensure there's an opportunity for the student to be creative or think outside the box (such as a question asking "What do you think about...?" or "Imagine and describe...").
+---
+## **Formatting Requirements**
+- The worksheet and answer sheet **must be formatted for easy printing**.  
+- **Start each new section on a new page** for clarity.  
+- **Use clear fonts and spacing** to ensure readability.  
+- **Include a footer with page numbers**.  
 
-Where appropriate, incorporate visuals or interactive components: mention or include a diagram, image, or chart that the student can refer to or label. If an actual image can't be included in the generated output, describe what image or diagram could be used. You can also suggest a simple hands-on activity within the worksheet (e.g., "Try this at home: ...") to make it interactive.
+---
+## **Final Output Requirements**
+- The final document should be a **fully formatted Word document (.docx)**, **not PDF or other formats**.  
+- The worksheet should be **engaging, educational, and aligned with the US curriculum**.  
+- The answer sheet should be **thorough and helpful for parents/teachers to review**.  
+- The overall worksheet should **make learning fun, interactive, and challenging while reinforcing key skills**.`;
 
-The tone of the worksheet should be encouraging and fun. Start with a personalized greeting or a short introduction addressing ${profile.name} to make it friendly. Use clear, age-appropriate language in both questions and instructions. Organize the worksheet with sections or headings if needed (for example, "Part 1: Basics," "Part 2: Challenge Questions," "Bonus Puzzle," etc.) so it's well-structured and easy to follow.
-
-Finally, output should be in word document format (docx). This means using a clean layout: include a title for the worksheet, number the questions or tasks, and ensure each question is separated by some space for the student's answers. If there are multiple sections, clearly label them. The end result should be a fun, educational, and challenging worksheet that helps reinforce learning and spark the student's curiosity in ${subject}.
-
-Answer Sheet Section (Separate Page)
-
-Create separate page(s) at the end of the document containing a detailed answer sheet for parents to review:
-
-    Correct answers for all questions
-    Step-by-step explanations or reasoning for complex problems (e.g., for math, show how to solve; for reading comprehension, explain the key points).
-    Hints or alternative solutions where applicable to help parents guide their child's learning.
-    Encouraging Feedback: Include short motivational tips or reinforcement suggestions (e.g., "Great effort! If you struggled with Question 5, try breaking it into smaller steps.").`;
+  return prompt;
 } 

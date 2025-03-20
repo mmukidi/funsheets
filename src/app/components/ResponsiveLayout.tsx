@@ -1,24 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
 interface ResponsiveLayoutProps {
   children: React.ReactNode;
 }
 
 export default function ResponsiveLayout({ children }: ResponsiveLayoutProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
     <div className="w-full min-h-screen bg-[#1a1a1a]">
       <div className="container mx-auto px-4 py-8">

@@ -104,25 +104,22 @@ export default function UserDetailsForm() {
       }
 
       // Generate prompts for each selected subject
-      const prompts = formData.subjects.map(subject => ({
+      const generatedPrompts = formData.subjects.map(subject => ({
         subject,
-        prompt: generateCustomPrompt(
-          {
-            name: formData.name.trim(),
-            age: parseInt(formData.age),
-            interests: formData.interests.trim(),
-            subjects: formData.subjects,
-            gender: formData.gender
-          },
-          subject
-        ),
+        prompt: generateCustomPrompt({
+          name: formData.name,
+          age: formData.age,
+          interests: formData.interests,
+          subjects: formData.subjects,
+          gender: formData.gender
+        }),
         profileId: profileData.id
       }));
 
-      setGeneratedPrompts(prompts);
+      setGeneratedPrompts(generatedPrompts);
 
       // Save prompts to database
-      const promptPromises = prompts.map(async ({ subject, prompt, profileId }) => {
+      const promptPromises = generatedPrompts.map(async ({ subject, prompt, profileId }) => {
         const { error: promptError } = await supabase
           .from('prompts')
           .insert([

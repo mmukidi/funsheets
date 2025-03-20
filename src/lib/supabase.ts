@@ -32,6 +32,10 @@ export async function uploadWorksheetToStorage(
       throw error;
     }
 
+    if (!data) {
+      throw new Error('Upload failed: No data returned');
+    }
+
     // Get the public URL
     const { data: { publicUrl } } = supabase.storage
       .from('worksheets')
