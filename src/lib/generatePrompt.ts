@@ -34,7 +34,7 @@ Where appropriate, incorporate visuals or interactive components: mention or inc
 
 The tone of the worksheet should be encouraging and fun. Start with a personalized greeting or a short introduction addressing ${profile.name} to make it friendly. Use clear, age-appropriate language in both questions and instructions. Organize the worksheet with sections or headings if needed (for example, "Part 1: Basics," "Part 2: Challenge Questions," "Bonus Puzzle," etc.) so it's well-structured and easy to follow.
 
-Finally, output should be in word document. This means using a clean layout: include a title for the worksheet, number the questions or tasks, and ensure each question is separated by some space for the student's answers. If there are multiple sections, clearly label them. The end result should be a fun, educational, and challenging worksheet that helps reinforce learning and spark the student's curiosity in ${subject}.
+Finally, output should be in word document format (docx). This means using a clean layout: include a title for the worksheet, number the questions or tasks, and ensure each question is separated by some space for the student's answers. If there are multiple sections, clearly label them. The end result should be a fun, educational, and challenging worksheet that helps reinforce learning and spark the student's curiosity in ${subject}.
 
 Answer Sheet Section (Separate Page)
 
