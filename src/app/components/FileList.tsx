@@ -73,7 +73,7 @@ export default function FileList() {
   if (loading) {
     return (
       <div className="p-4 text-center">
-        <p className="text-gray-600">Loading documents...</p>
+        <p className="text-[#a8d1ff]">Loading documents...</p>
       </div>
     );
   }
@@ -81,7 +81,7 @@ export default function FileList() {
   if (error) {
     return (
       <div className="p-4 text-center">
-        <p className="text-red-600">{error}</p>
+        <p className="text-red-400">{error}</p>
       </div>
     );
   }
@@ -89,7 +89,7 @@ export default function FileList() {
   if (documents.length === 0) {
     return (
       <div className="p-4 text-center">
-        <p className="text-gray-600">No documents found.</p>
+        <p className="text-[#a8d1ff]">No documents found.</p>
       </div>
     );
   }
@@ -99,15 +99,15 @@ export default function FileList() {
       {documents.map((doc) => (
         <div
           key={doc.id}
-          className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md"
+          className="p-4 sm:p-6 bg-[#2a2a2a] rounded-lg border border-[#3a3a3a] hover:border-[#a8d1ff] transition-colors duration-200"
         >
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="flex-1">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 break-words">{doc.title}</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-white break-words">{doc.title}</h3>
               {doc.description && (
-                <p className="mt-1 text-sm text-gray-600 break-words">{doc.description}</p>
+                <p className="mt-1 text-sm text-[#a8d1ff] break-words">{doc.description}</p>
               )}
-              <div className="mt-2 text-sm text-gray-500 space-y-1">
+              <div className="mt-2 text-sm text-gray-400 space-y-1">
                 <p>File type: {doc.file_type}</p>
                 <p>Size: {formatFileSize(doc.file_size)}</p>
                 <p>Uploaded: {formatDate(doc.created_at)}</p>

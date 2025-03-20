@@ -14,7 +14,6 @@ export default function FileUpload() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-      // Set default title as filename without extension
       const fileName = e.target.files[0].name;
       setTitle(fileName.replace(/\.[^/.]+$/, ''));
       setError('');
@@ -37,12 +36,10 @@ export default function FileUpload() {
       setMessage('');
       setError('');
 
-      // Generate a unique filename to prevent conflicts
       const timestamp = Date.now();
       const uniqueFileName = `${timestamp}-${file.name}`;
       const filePath = `documents/${uniqueFileName}`;
 
-      // Upload file to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('worksheets')
         .upload(filePath, file);
@@ -52,7 +49,6 @@ export default function FileUpload() {
         throw new Error(`Upload failed: ${uploadError.message}`);
       }
 
-      // Insert record into database
       const { error: dbError } = await supabase.from('documents').insert([
         {
           title: title.trim(),
@@ -87,11 +83,11 @@ export default function FileUpload() {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md">
-      <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Upload Worksheet</h2>
+    <div className="p-4 sm:p-6 bg-[#2a2a2a] rounded-lg border border-[#3a3a3a]">
+      <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">Upload Worksheet</h2>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-[#a8d1ff] mb-2">
             Select File
           </label>
           <div className="relative">
@@ -104,12 +100,12 @@ export default function FileUpload() {
             />
             <label
               htmlFor="file-upload"
-              className="flex flex-col items-center justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-lg appearance-none cursor-pointer hover:border-blue-500 focus:outline-none"
+              className="flex flex-col items-center justify-center w-full h-32 px-4 transition bg-[#1a1a1a] border-2 border-[#3a3a3a] border-dashed rounded-lg appearance-none cursor-pointer hover:border-[#a8d1ff] focus:outline-none"
             >
               <div className="flex items-center space-x-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-8 h-8 text-gray-400"
+                  className="w-8 h-8 text-[#a8d1ff]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -121,7 +117,7 @@ export default function FileUpload() {
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   />
                 </svg>
-                <span className="font-medium text-gray-600">
+                <span className="font-medium text-[#a8d1ff]">
                   {file ? 'Change file' : 'Click to upload'}
                 </span>
               </div>
@@ -133,7 +129,7 @@ export default function FileUpload() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-[#a8d1ff] mb-2">
             Title
           </label>
           <input
@@ -141,19 +137,19 @@ export default function FileUpload() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter document title"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+            className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#3a3a3a] rounded-md focus:outline-none focus:ring-2 focus:ring-[#a8d1ff] text-white placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-[#a8d1ff] mb-2">
             Description (Optional)
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter document description"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+            className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#3a3a3a] rounded-md focus:outline-none focus:ring-2 focus:ring-[#a8d1ff] text-white placeholder-gray-400"
             rows={3}
           />
         </div>
@@ -161,18 +157,18 @@ export default function FileUpload() {
         <button
           onClick={handleUpload}
           disabled={!file || uploading}
-          className="w-full px-4 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed text-base font-medium"
+          className="w-full px-4 py-3 bg-[#a8d1ff] text-[#1a1a1a] rounded-full hover:bg-[#8ab4e6] transition-colors disabled:bg-[#3a3a3a] disabled:text-gray-400 disabled:cursor-not-allowed text-base font-medium"
         >
           {uploading ? 'Uploading...' : 'Upload File'}
         </button>
 
         {message && (
-          <p className="text-sm text-green-600 bg-green-50 p-3 rounded-md">
+          <p className="text-sm text-green-400 bg-[#1a1a1a] p-3 rounded-md border border-green-400/20">
             {message}
           </p>
         )}
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+          <p className="text-sm text-red-400 bg-[#1a1a1a] p-3 rounded-md border border-red-400/20">
             {error}
           </p>
         )}
