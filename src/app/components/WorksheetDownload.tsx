@@ -69,13 +69,16 @@ export default function WorksheetDownload({ prompt, subject, studentName, profil
         throw new Error('No data received from storage');
       }
 
-      // Create a blob URL
-      const url = window.URL.createObjectURL(data);
+      // Create a blob URL with the correct content type
+      const blob = new Blob([data], { type: 'text/html;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
       
       // Create a temporary link and trigger download
       const a = document.createElement('a');
       a.href = url;
       a.download = `${studentName}_${subject}_Worksheet.html`;
+      // Add target="_blank" to open in new tab on mobile
+      a.target = '_blank';
       document.body.appendChild(a);
       a.click();
       
