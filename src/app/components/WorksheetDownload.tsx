@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { generateWorksheet } from '@/lib/chatgpt';
+import { generateWorksheet } from '@/lib/claude';
 import { uploadWorksheetToStorage, supabase } from '@/lib/supabase';
 
 interface WorksheetDownloadProps {
@@ -9,9 +9,10 @@ interface WorksheetDownloadProps {
   subject: string;
   studentName: string;
   profileId: string;
+  studentAge: string;
 }
 
-export default function WorksheetDownload({ prompt, subject, studentName, profileId }: WorksheetDownloadProps) {
+export default function WorksheetDownload({ prompt, subject, studentName, profileId, studentAge }: WorksheetDownloadProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [filePath, setFilePath] = useState<string | null>(null);
@@ -27,10 +28,11 @@ export default function WorksheetDownload({ prompt, subject, studentName, profil
         throw new Error('Failed to generate worksheet content');
       }
 
-      // Create a proper docx file name
+      // Create a proper docx file name with profile name, age, and datetime
       const sanitizedName = studentName.replace(/[^a-zA-Z0-9]/g, '_');
-      const timestamp = new Date().toISOString().split('T')[0];
-      const fileName = `${sanitizedName}_${subject}_Worksheet_${timestamp}.docx`;
+      const sanitizedAge = studentAge.replace(/[^0-9]/g, '');
+      const datetime = new Date().toISOString().replace(/[:.]/g, '-');
+      const fileName = `${sanitizedName}-${sanitizedAge}-${datetime}.html`;
 
       // Save to Supabase storage
       const { publicUrl } = await uploadWorksheetToStorage(content, fileName, profileId, subject);
@@ -73,7 +75,7 @@ export default function WorksheetDownload({ prompt, subject, studentName, profil
       // Create a temporary link and trigger download
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${studentName}_${subject}_Worksheet.docx`;
+      a.download = `${studentName}_${subject}_Worksheet.html`;
       document.body.appendChild(a);
       a.click();
       

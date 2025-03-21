@@ -264,6 +264,7 @@ export default function UserDetailsForm() {
               subject={subject}
               studentName={formData.name.trim()}
               profileId={profileId}
+              studentAge={formData.age.trim()}
             />
           ))}
         </div>

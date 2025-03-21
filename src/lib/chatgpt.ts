@@ -19,7 +19,7 @@ export async function generateWorksheet(prompt: string): Promise<string> {
     console.log('Making OpenAI API request with prompt:', prompt.substring(0, 100) + '...');
     
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview",
+      model: "gpt-4-1106-preview",
       messages: [
         {
           role: "system",

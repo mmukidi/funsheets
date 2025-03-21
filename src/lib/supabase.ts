@@ -13,7 +13,7 @@ export async function uploadWorksheetToStorage(
 ) {
   try {
     // Create a Blob from the content
-    const blob = new Blob([content], { type: 'application/msword' });
+    const blob = new Blob([content], { type: 'text/html' });
     
     // Create the file path
     const filePath = `documents/${profileId}/${subject}/${fileName}`;
@@ -22,7 +22,7 @@ export async function uploadWorksheetToStorage(
     const { data, error } = await supabase.storage
       .from('worksheets')
       .upload(filePath, blob, {
-        contentType: 'application/msword',
+        contentType: 'text/html',
         cacheControl: '3600',
         upsert: true
       });
